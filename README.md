@@ -1,4 +1,4 @@
-# Laravel Assignment
+# Laravel Assignment Solved By Mahmood alsafadi
 
 This Laravel project provides CRUD (Create, Read, Update, Delete) functionality for managing users. It includes features to save details for each user and is accompanied by test cases to ensure the functionality works as expected.
 
