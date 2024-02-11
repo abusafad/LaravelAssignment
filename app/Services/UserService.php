@@ -3,11 +3,9 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Detail;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
-class UserService
+class UserService implements UserServiceInterface
 {
     public function rules($id = null)
     {
@@ -79,34 +77,13 @@ class UserService
         User::where('id',$userId)->delete();
     }
 
-    public function hash(string $key)
+    public function hash(string $password): string
     {
-        // Code goes brrrr.
-    }
-
-    
-    public function upload(User $user, UploadedFile $photo)
-    {
-        // Define the directory where the photo will be stored
-        $directory = 'images';
-
-        // Generate a unique filename for the photo
-        $filename = uniqid() . '.' . $photo->getClientOriginalExtension();
-
-        // Store the photo in the storage directory
-        $path = $photo->storeAs($directory, $filename);
-
-        // Update the user's photo path in the database
-        $user->photo = $path;
-        $user->save();
-
-        return $path;
+        return Hash::make($password);
     }
 
     public function saveUserDetails(User $user)
     {
-
-    //(empty($user->photo) ? "sss" :  $user->photo);
     $key = array('Full name' , 'Middle Initial','Avatar','Gender');
     $value = array($user->firstname . ' ' . $user->middlename . ' ' . $user->lastname, substr($user->middlename, 0, 1),$user->photo,$user->prefixname);
 

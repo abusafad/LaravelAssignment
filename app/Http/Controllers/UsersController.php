@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserSaved;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Services\UserService;
 use App\Http\Requests\UserRequest;
-use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
     
     protected $userService;
+    protected $UserServiceInterface;
+
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
@@ -49,7 +47,9 @@ class UsersController extends Controller
             $request->photo->move(public_path('images'), $imageName);
             $validatedData['photo'] = $imageName;
         }
-        $validatedData['password'] = Hash::make($request->password);
+
+        $validatedData['password'] = $this->userService->hash($request->password);
+        
         // Create a new user using the UserService
         $user = $this->userService->store($validatedData);
 
@@ -88,8 +88,8 @@ class UsersController extends Controller
             $request->photo->move(public_path('images'), $imageName);
             $validatedData['photo'] = $imageName;
         }
-        $validatedData['password'] = Hash::make($request->password);
-
+        $validatedData['password'] = $this->userService->hash($request->password);
+       
         // Update the user using the UserService
         $this->userService->update($id, $validatedData);
 
