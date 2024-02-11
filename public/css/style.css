@@ -1,0 +1,11 @@
+body{
+    background-color: black;
+}
+
+.list-user form{
+    display: inline-block;
+}
+
+.list-user a ,.list-user i {
+    color: white;
+}
